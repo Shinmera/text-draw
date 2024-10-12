@@ -71,7 +71,12 @@
 
 (defun progress (percentage &key (stream T) (width *print-right-margin*) (label T))
   (with-normalized-stream (stream stream)
-    ))
+    (let* ((width (or width 80))
+           (bar-width (max 0 (if label (- width 5) width)))
+           (full (max 0 (min bar-width (floor (* percentage 1/100 bar-width)))))
+           (empty (- bar-width full)))
+      (format stream "~v{█~}~v{░~}" full 0 empty 0)
+      (when label (format stream " ~3d%" (floor percentage))))))
 
 (defun wrap-char-p (char)
   (and (not (char= char #\Linefeed))
