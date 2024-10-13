@@ -95,5 +95,5 @@
     ((:right :east) "→")
     ((:up :north) "↑")
     ((:down :south) "↓")
-    ((:up-down :north-south) "↔")
-    ((:left-right :east-west) "↕")))
+    ((:up-down :north-south) "↕")
+    ((:left-right :east-west) "↔")))
