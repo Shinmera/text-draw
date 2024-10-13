@@ -27,4 +27,5 @@
    #:vertical-line
    #:line
    #:translate
-   #:composite))
+   #:composite
+   #:compose))

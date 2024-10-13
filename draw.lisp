@@ -237,3 +237,11 @@
                          (al (write-line al stream))
                          (bl (write-line bl stream))
                          (T (return)))))))))
+
+(defmacro compose (stream &body parts)
+  (if (cddr parts)
+      (destructuring-bind ((x y part) . parts) parts
+        `(composite ,part (compose NIL ,@parts)
+                    :a-offset (cons ,x ,y) :stream ,stream))
+      (destructuring-bind ((ax ay a) (bx by b)) parts
+        `(composite ,a ,b :a-offset (cons ,ax ,ay) :b-offset (cons ,bx ,by) :stream ,stream))))
