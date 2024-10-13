@@ -96,10 +96,6 @@
         (terpri stream))
       (format stream "~v{ ~} └~v{─~}┘ ~v{ ~}" ivlen 0 width 0 ovlen 0))))
 
-(defun graph (connections &key (stream T))
-  (with-normalized-stream (stream stream)
-    ))
-
 (defun progress (percentage &key (stream T) (width *print-right-margin*) (label T))
   (with-normalized-stream (stream stream)
     (let* ((width (or width 80))
@@ -211,3 +207,17 @@
   (if (<= (abs height) (abs width))
       (apply #'horizontal-line width height args)
       (apply #'vertical-line width height args)))
+
+(defun translate (string x y &key (stream T))
+  (with-normalized-stream (stream stream)
+    (let ((width (with-input-from-string (in string)
+                   (loop for line = (read-line in NIL NIL)
+                         while line maximize (length line)))))
+      (dotimes (i y)
+        (format stream "~v{ ~}~%" (+ (abs x) width) 0))
+      (with-input-from-string (in string)
+        (loop for line = (read-line in NIL NIL)
+              while line
+              do (format stream "~v{ ~}~va~v{ ~}~%" x 0 width line (- x) 0)))
+      (dotimes (i (- y))
+        (format stream "~v{ ~}~%" (+ (abs x) width) 0)))))

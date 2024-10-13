@@ -11,4 +11,5 @@
    #:box
    #:horizontal-line
    #:vertical-line
-   #:line))
+   #:line
+   #:translate))
