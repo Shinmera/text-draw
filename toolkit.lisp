@@ -63,7 +63,38 @@
 
 (defun node (inputs outputs &key (stream T) label)
   (with-normalized-stream (stream stream)
-    ))
+    (let* ((height (max (length inputs) (length outputs)))
+           (igap (truncate (- height (length inputs)) 2))
+           (ogap (truncate (- height (length outputs)) 2))
+           (ivlen (loop for port in inputs maximize (if (consp port) (length (princ-to-string (cdr port))) 0)))
+           (iplen (loop for port in inputs maximize (if (consp port) (length (princ-to-string (car port))) (length (princ-to-string port)))))
+           (ovlen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (cdr port))) 0)))
+           (oplen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (car port))) (length (princ-to-string port)))))
+           (width (+ iplen oplen (if label (+ 1 (length (princ-to-string label))) 1))))
+      (format stream "~v{ ~} ┌~v{─~}┐ ~v{ ~}~%" ivlen 0 width 0 ovlen 0)
+      (dotimes (i height)
+        ;; Print the left hand port
+        (cond ((or (< 0 igap) (null inputs))
+               (format stream "~v{ ~} │~v{ ~}" ivlen 0 iplen 0)
+               (decf igap))
+              ((consp (car inputs))
+               (destructuring-bind (port . value) (pop inputs)
+                 (format stream "~v@a╶┤~va" ivlen value iplen port)))
+              (T
+               (format stream "~v{ ~} ┤~va" ivlen 0 iplen (pop inputs))))
+        ;; Print the label
+        (format stream "~v{ ~}" (- width iplen oplen) 0)
+        ;; Print the right hand port
+        (cond ((or (< 0 ogap) (null outputs))
+               (format stream "~v{ ~}│ ~v{ ~}" oplen 0 ovlen 0)
+               (decf ogap))
+              ((consp (car outputs))
+               (destructuring-bind (port . value) (pop outputs)
+                 (format stream "~v@a├╴~va" oplen port oplen value)))
+              (T
+               (format stream "~v@a├ ~v{ ~}" oplen (pop outputs) ovlen 0)))
+        (terpri stream))
+      (format stream "~v{ ~} └~v{─~}┘ ~v{ ~}" ivlen 0 width 0 ovlen 0))))
 
 (defun graph (connections &key (stream T))
   (with-normalized-stream (stream stream)
