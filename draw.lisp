@@ -87,15 +87,6 @@
         (terpri stream))
       (format stream "~v{ ~} └~v{─~}┘ ~v{ ~}" ivlen 0 width 0 ovlen 0))))
 
-(defun progress (percentage &key stream (width *print-right-margin*) (label T))
-  (with-normalized-stream (stream stream)
-    (let* ((width (or width 80))
-           (bar-width (max 0 (if label (- width 5) width)))
-           (full (max 0 (min bar-width (floor (* percentage 1/100 bar-width)))))
-           (empty (- bar-width full)))
-      (format stream "~v{█~}~v{░~}" full 0 empty 0)
-      (when label (format stream " ~3d%" (floor percentage))))))
-
 (defun box (text &key stream (width *print-right-margin*) (align :middle) (background :transparent))
   (with-normalized-stream (stream stream)
     (let ((text (if (listp text) text (list text)))
@@ -116,6 +107,23 @@
                (destructuring-bind (l . r) (align align line (- width 2))
                  (format stream "▐~v@{~a~:*~}~*~a~v@{~a~:*~}▌~%" l bg line r bg)))
              (format stream "▝~v{▀~}▘" (- width 2) 0))))))
+
+(defun progress (percentage &key stream (width *print-right-margin*) (label T))
+  (with-normalized-stream (stream stream)
+    (let* ((width (or width 80))
+           (bar-width (max 0 (if label (- width 5) width)))
+           (full (max 0 (min bar-width (floor (* percentage 1/100 bar-width)))))
+           (empty (- bar-width full)))
+      (format stream "~v{█~}~v{░~}" full 0 empty 0)
+      (when label (format stream " ~3d%" (floor percentage))))))
+
+(defun check (filled &key stream label)
+  (with-normalized-stream (stream stream)
+    (format stream "~:[☐~;☑~]~@[ ~a~]" filled label)))
+
+(defun radio (filled &key stream label)
+  (with-normalized-stream (stream stream)
+    (format stream "~:[⦾~;⦿~]~@[ ~a~]" filled label)))
 
 (defun horizontal-line (width height &key stream (bend :middle))
   (with-normalized-stream (stream stream)

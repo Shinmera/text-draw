@@ -12,8 +12,10 @@
    #:table
    #:tree
    #:node
-   #:progress
    #:box
+   #:progress
+   #:check
+   #:radio
    #:horizontal-line
    #:vertical-line
    #:line
