@@ -138,7 +138,7 @@
              (width (loop for line in lines maximize (length line))))
         (format stream "~v@{~v@{~a~:*~}~:*~%~}" u (+ l width r) bg)
         (dolist (line lines)
-          (format stream "~v@{~a~:*~}~*~a~v@{~a~:*~}~%" l bg line r bg))
+          (format stream "~v@{~a~:*~}~*~v,,,va~v@{~a~:*~}~%" l bg width bg line r bg))
         (format stream "~v@{~v@{~a~:*~}~:*~%~}" b (+ l width r) bg)))))
 
 (defun check (filled &key stream label)

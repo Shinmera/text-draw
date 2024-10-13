@@ -24,12 +24,14 @@
       (nreverse items))))
 
 (defun white-char-p (char)
-  #+sb-unicode (sb-unicode:whitespace-p char)
-  #-sb-unicode (member char '(#\Space #\Tab)))
+  (and (not (char= char (code-char #x00A0)))
+       #+sb-unicode (sb-unicode:whitespace-p char)
+       #-sb-unicode (member char '(#\Space #\Tab))))
 
 (defun wrap-char-p (char)
   (and (not (char= char #\Linefeed))
        (not (char= char #\Return))
+       (not (char= char (code-char #x00A0)))
        (white-char-p char)))
 
 (defun wrap (line width)
@@ -39,7 +41,7 @@
     (flet ((push-line (at)
              ;; Backscan AT to exclude trailing whitespace
              (let ((start at))
-               (loop while (and (< 1 start) (white-char-p (char line (1- start)))) do (decf start))
+               (loop while (and (< line-start start) (white-char-p (char line (1- start)))) do (decf start))
                (push (subseq line line-start start) lines))
              ;; Forwscan AT to exclude following whitespace
              (loop while (and (< at (length line)) (wrap-char-p (char line at))) do (incf at))
