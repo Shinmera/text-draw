@@ -3,19 +3,6 @@
 (defvar *here* #.(make-pathname :name NIL :type NIL :defaults (or *compile-file-pathname* *load-pathname*)))
 (defvar *styles*)
 
-(defun split (string split)
-  (let ((items ()) (out (make-string-output-stream)))
-    (flet ((push-item ()
-             (let ((string (get-output-stream-string out)))
-               (when (string/= "" string)
-                 (push string items)))))
-      (loop for char across string
-            do (if (char= char split)
-                   (push-item)
-                   (write-char char out))
-            finally (push-item))
-      (nreverse items))))
-
 (defun load-styles (&optional (file (make-pathname :name "styles" :type "txt" :defaults *here*)))
   (with-open-file (stream file)
     (let ((table (make-hash-table :test 'eq))

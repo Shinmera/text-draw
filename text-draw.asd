@@ -9,7 +9,8 @@
   :source-control (:git "https://github.com/Shinmera/text-draw.git")
   :serial T
   :components ((:file "package")
-               (:file "styles")
                (:file "toolkit")
+               (:file "styles")
+               (:file "draw")
                (:file "documentation"))
   :depends-on (:documentation-utils))

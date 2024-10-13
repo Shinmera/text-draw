@@ -1,13 +1,18 @@
 (defpackage #:org.shirakumo.text-draw
   (:use #:cl)
+  ;; toolkit.lisp
+  (:export
+   #:wrap
+   #:align)
+  ;; styles.lisp
+  (:export
+   #:style)
+  ;; draw.lisp
   (:export
    #:table
    #:tree
    #:node
-   #:graph
    #:progress
-   #:wrap
-   #:align
    #:box
    #:horizontal-line
    #:vertical-line
