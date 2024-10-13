@@ -10,6 +10,60 @@
            (null (with-output-to-string (,stream)
                    (,thunk ,stream))))))))
 
+(defun white-char-p (char)
+  #+sb-unicode (sb-unicode:whitespace-p char)
+  #-sb-unicode (member char '(#\Space #\Tab)))
+
+(defun wrap-char-p (char)
+  (and (not (char= char #\Linefeed))
+       (not (char= char #\Return))
+       (white-char-p char)))
+
+(defun wrap (line width)
+  (let ((lines ())
+        (line-start 0)
+        (last-candidate 0))
+    (flet ((push-line (at)
+             ;; Backscan AT to exclude trailing whitespace
+             (let ((start at))
+               (loop while (and (< 1 start) (white-char-p (char line (1- start)))) do (decf start))
+               (push (subseq line line-start start) lines))
+             ;; Forwscan AT to exclude following whitespace
+             (loop while (and (< at (length line)) (wrap-char-p (char line at))) do (incf at))
+             (setf line-start at last-candidate at)))
+      (loop for i from 0 below (length line)
+            for char = (char line i)
+            do (cond ((< (- i line-start) width)
+                      (cond ((member char '(#\Return #\Linefeed))
+                             (push-line (1+ i)))
+                            ((wrap-char-p char)
+                             (setf last-candidate i))))
+                     ((= line-start last-candidate)
+                      (push-line i))
+                     (T
+                      (push-line last-candidate)))
+            finally (when (< line-start (length line))
+                      (push (subseq line line-start) lines)))
+      (nreverse lines))))
+
+(defun align (alignment line width)
+  (let ((diff (- width (length line))))
+    (if (<= diff 0)
+        (cons 0 0)
+        (ecase alignment
+          ((:left) (cons 0 diff))
+          ((:right) (cons diff 0))
+          ((:middle :center) (cons (truncate diff 2) (- diff (truncate diff 2))))))))
+
+(defun background (type)
+  (ecase type
+    (:transparent " ")
+    (:white (string (code-char #x00A0)))
+    (:black "█")
+    (:dark-gray "░")
+    (:gray "▒")
+    (:light-gray "▓")))
+
 (defun table (table &key (stream NIL) (padding 1) (borders T))
   (with-normalized-stream (stream stream)
     (let* ((columns (length (first table)))
@@ -61,7 +115,7 @@
                       (format stream "...~%")))))
       (recurse root () 0))))
 
-(defun node (inputs outputs &key (stream NIL) label)
+(defun node (inputs outputs &key (stream NIL) label (background :transparent))
   (with-normalized-stream (stream stream)
     (let* ((height (max (length inputs) (length outputs)))
            (igap (truncate (- height (length inputs)) 2))
@@ -70,29 +124,30 @@
            (iplen (loop for port in inputs maximize (if (consp port) (length (princ-to-string (car port))) (length (princ-to-string port)))))
            (ovlen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (cdr port))) 0)))
            (oplen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (car port))) (length (princ-to-string port)))))
-           (width (+ iplen oplen (if label (+ 1 (length (princ-to-string label))) 1))))
+           (width (+ iplen oplen (if label (+ 1 (length (princ-to-string label))) 1)))
+           (bg (char (background background) 0)))
       (format stream "~v{ ~} ┌~v{─~}┐ ~v{ ~}~%" ivlen 0 width 0 ovlen 0)
       (dotimes (i height)
         ;; Print the left hand port
         (cond ((or (< 0 igap) (null inputs))
-               (format stream "~v{ ~} │~v{ ~}" ivlen 0 iplen 0)
+               (format stream "~v{ ~} │~v@{~a~:*~}" ivlen 0 iplen bg)
                (decf igap))
               ((consp (car inputs))
                (destructuring-bind (port . value) (pop inputs)
-                 (format stream "~v@a╶┤~va" ivlen value iplen port)))
+                 (format stream "~v@a╶┤~v,,,va" ivlen value iplen bg port)))
               (T
-               (format stream "~v{ ~} ┤~va" ivlen 0 iplen (pop inputs))))
+               (format stream "~v{ ~}~* ┤~v,,,va" ivlen 0 iplen bg (pop inputs))))
         ;; Print the label
-        (format stream "~v{ ~}" (- width iplen oplen) 0)
+        (format stream "~v@{~a~:*~}" (- width iplen oplen) bg)
         ;; Print the right hand port
         (cond ((or (< 0 ogap) (null outputs))
-               (format stream "~v{ ~}│ ~v{ ~}" oplen 0 ovlen 0)
+               (format stream "~v@{~a~:*~}~*│ ~v{ ~}" oplen bg ovlen 0)
                (decf ogap))
               ((consp (car outputs))
                (destructuring-bind (port . value) (pop outputs)
-                 (format stream "~v@a├╴~va" oplen port oplen value)))
+                 (format stream "~v,,,v@a├╴~va" oplen bg port oplen value)))
               (T
-               (format stream "~v@a├ ~v{ ~}" oplen (pop outputs) ovlen 0)))
+               (format stream "~v,,,v@a├ ~v{ ~}" oplen bg (pop outputs) ovlen 0)))
         (terpri stream))
       (format stream "~v{ ~} └~v{─~}┘ ~v{ ~}" ivlen 0 width 0 ovlen 0))))
 
@@ -105,67 +160,14 @@
       (format stream "~v{█~}~v{░~}" full 0 empty 0)
       (when label (format stream " ~3d%" (floor percentage))))))
 
-(defun white-char-p (char)
-  #+sb-unicode (sb-unicode:whitespace-p char)
-  #-sb-unicode (member char '(#\Space #\Tab)))
-
-(defun wrap-char-p (char)
-  (and (not (char= char #\Linefeed))
-       (not (char= char #\Return))
-       (white-char-p char)))
-
-(defun wrap (line width)
-  (let ((lines ())
-        (line-start 0)
-        (last-candidate 0))
-    (flet ((push-line (at)
-             ;; Backscan AT to exclude trailing whitespace
-             (loop while (and (< 1 at) (wrap-char-p (char line (1- at)))) do (decf at))
-             (push (subseq line line-start at) lines)
-             ;; Forwscan AT to exclude following whitespace
-             (loop while (and (< at (length line)) (wrap-char-p (char line at))) do (incf at))
-             (setf line-start at last-candidate at)))
-      (loop for i from 0 below (length line)
-            for char = (char line i)
-            do (cond ((< (- i line-start) width)
-                      (cond ((member char '(#\Return #\Linefeed))
-                             (push-line i))
-                            ((wrap-char-p char)
-                             (setf last-candidate i))))
-                     ((= line-start last-candidate)
-                      (push-line i))
-                     (T
-                      (push-line last-candidate)))
-            finally (when (< line-start (length line))
-                      (push (subseq line line-start) lines)))
-      (nreverse lines))))
-
-(defun align (alignment line width)
-  (let ((diff (- width (length line))))
-    (if (<= diff 0)
-        (cons 0 0)
-        (ecase alignment
-          ((:left) (cons 0 diff))
-          ((:right) (cons diff 0))
-          ((:middle :center) (cons (truncate diff 2) (- diff (truncate diff 2))))))))
-
-(defun background (type)
-  (ecase type
-    (:transparent " ")
-    (:white (string (code-char #x00A0)))
-    (:black "█")
-    (:dark-gray "░")
-    (:gray "▒")
-    (:light-gray "▓")))
-
 (defun box (text &key (stream NIL) (width *print-right-margin*) (align :middle) (background :transparent))
   (with-normalized-stream (stream stream)
     (let ((text (if (listp text) text (list text)))
           (bg (background background)))
+      (setf text (loop for line in text
+                       append (wrap line (if width (- width 2) most-positive-fixnum))))
       (when (or (eql T width) (null width))
         (setf width (loop for line in text maximize (+ 2 (length line)))))
-      (setf text (loop for line in text
-                       append (wrap line (- width 2))))
       (cond ((member background '(:transparent :white))
              (format stream "┌~v{─~}┐~%" (- width 2) 0)
              (dolist (line text)
