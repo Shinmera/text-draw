@@ -88,3 +88,10 @@
     (:dark-gray "░")
     (:gray "▒")
     (:light-gray "▓")))
+
+(defun arrow (dir)
+  (ecase dir
+    ((:left :west) "←")
+    ((:right :east) "→")
+    ((:up :north) "↑")
+    ((:down :south) "↓")))

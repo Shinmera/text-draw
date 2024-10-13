@@ -56,7 +56,7 @@
                       (format stream "...~%")))))
       (recurse root () 0))))
 
-(defun node (inputs outputs &key stream label (background :transparent))
+(defun node (inputs outputs &key stream label (background :white))
   (with-normalized-stream (stream stream)
     (let* ((height (max (length inputs) (length outputs)))
            (igap (truncate (- height (length inputs)) 2))
@@ -100,7 +100,7 @@
         (destructuring-bind (l . r) (alignment alignment line width)
           (format stream "~v{ ~}~a~v{ ~}~%" l 0 line r 0))))))
 
-(defun box (text &key stream (width *print-right-margin*) (align :middle) (background :transparent))
+(defun box (text &key stream (width *print-right-margin*) (align :middle) (background :white))
   (with-normalized-stream (stream stream)
     (let ((text (if (listp text) text (list text)))
           (bg (background background)))
@@ -153,6 +153,7 @@
   (format NIL "~{~a~^~%~}" parts))
 
 (defun horizontal-line (width height &key stream (bend :middle))
+  ;; TODO: arrows
   (with-normalized-stream (stream stream)
     (when (< width 0) (setf width (- width) height (- height)))
     (let* ((l (ecase bend
@@ -174,6 +175,7 @@
              (format stream "~v{─~}" width 0))))))
 
 (defun vertical-line (width height &key stream (bend :middle))
+  ;; TODO: arrows
   (with-normalized-stream (stream stream)
     (when (< height 0) (setf width (- width) height (- height)))
     (let* ((u (ecase bend
