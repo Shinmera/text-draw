@@ -152,8 +152,8 @@
 (defun background (type)
   (ecase type
     (:transparent " ")
-    (:black (string (code-char #x00A0)))
-    (:white "█")
+    (:white (string (code-char #x00A0)))
+    (:black "█")
     (:dark-gray "░")
     (:gray "▒")
     (:light-gray "▓")))
@@ -166,7 +166,7 @@
         (setf width (loop for line in text maximize (+ 2 (length line)))))
       (setf text (loop for line in text
                        append (wrap line (- width 2))))
-      (cond ((member background '(:transparent :black))
+      (cond ((member background '(:transparent :white))
              (format stream "┌~v{─~}┐~%" (- width 2) 0)
              (dolist (line text)
                (destructuring-bind (l . r) (align align line (- width 2))
