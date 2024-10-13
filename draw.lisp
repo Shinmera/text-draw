@@ -87,6 +87,14 @@
         (terpri stream))
       (format stream "~v{ ~} └~v{─~}┘ ~v{ ~}" ivlen 0 width 0 ovlen 0))))
 
+(defun align (text alignment &key stream)
+  (with-normalized-stream (stream stream)
+    (let* ((lines (lines text))
+           (width (loop for line in lines maximize (length line))))
+      (dolist (line lines)
+        (destructuring-bind (l . r) (alignment alignment line width)
+          (format stream "~v{ ~}~a~v{ ~}~%" l 0 line r 0))))))
+
 (defun box (text &key stream (width *print-right-margin*) (align :middle) (background :transparent))
   (with-normalized-stream (stream stream)
     (let ((text (if (listp text) text (list text)))
@@ -98,13 +106,13 @@
       (cond ((member background '(:transparent :white))
              (format stream "┌~v{─~}┐~%" (- width 2) 0)
              (dolist (line text)
-               (destructuring-bind (l . r) (align align line (- width 2))
+               (destructuring-bind (l . r) (alignment align line (- width 2))
                  (format stream "│~v@{~a~:*~}~*~a~v@{~a~:*~}│~%" l bg line r bg)))
              (format stream "└~v{─~}┘" (- width 2) 0))
             (T
              (format stream "▗~v{▄~}▖~%" (- width 2) 0)
              (dolist (line text)
-               (destructuring-bind (l . r) (align align line (- width 2))
+               (destructuring-bind (l . r) (alignment align line (- width 2))
                  (format stream "▐~v@{~a~:*~}~*~a~v@{~a~:*~}▌~%" l bg line r bg)))
              (format stream "▝~v{▀~}▘" (- width 2) 0))))))
 
@@ -124,6 +132,9 @@
 (defun radio (filled &key stream label)
   (with-normalized-stream (stream stream)
     (format stream "~:[⦾~;⦿~]~@[ ~a~]" filled label)))
+
+(defun rows (&rest parts)
+  (format NIL "~{~a~^~%~}" parts))
 
 (defun horizontal-line (width height &key stream (bend :middle))
   (with-normalized-stream (stream stream)

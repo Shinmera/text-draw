@@ -59,7 +59,7 @@
                       (push (subseq line line-start) lines)))
       (nreverse lines))))
 
-(defun align (alignment line width)
+(defun alignment (alignment line width)
   (let ((diff (- width (length line))))
     (if (<= diff 0)
         (cons 0 0)
@@ -67,6 +67,16 @@
           ((:left) (cons 0 diff))
           ((:right) (cons diff 0))
           ((:middle :center) (cons (truncate diff 2) (- diff (truncate diff 2))))))))
+
+(defun lines (text)
+  (with-input-from-string (text text)
+    (loop for line = (read-line text NIL NIL)
+          while line collect line)))
+
+(defun width (text)
+  (with-input-from-string (text text)
+    (loop for line = (read-line text NIL NIL)
+          while line maximize (length line))))
 
 (defun background (type)
   (ecase type

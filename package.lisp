@@ -3,7 +3,9 @@
   ;; toolkit.lisp
   (:export
    #:wrap
-   #:align)
+   #:alignment
+   #:width
+   #:lines)
   ;; styles.lisp
   (:export
    #:style)
@@ -13,6 +15,8 @@
    #:tree
    #:node
    #:box
+   #:align
+   #:rows
    #:progress
    #:check
    #:radio
