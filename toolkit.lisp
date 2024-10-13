@@ -10,7 +10,7 @@
            (null (with-output-to-string (,stream)
                    (,thunk ,stream))))))))
 
-(defun table (table &key (stream T) (padding 1) (borders T))
+(defun table (table &key (stream NIL) (padding 1) (borders T))
   (with-normalized-stream (stream stream)
     (let* ((columns (length (first table)))
            (widths (append (loop for i from 0 below columns
@@ -42,7 +42,7 @@
                 while values
                 finally (format stream "└~{~v{─~}~^┴~:*~}┘" widths))))))
 
-(defun tree (root children-fun &key (stream T) (max-depth (or *print-level* 3)) (key #'identity))
+(defun tree (root children-fun &key (stream NIL) (max-depth (or *print-level* 3)) (key #'identity))
   (with-normalized-stream (stream stream)
     (labels ((recurse (node last depth)
                (when last
@@ -61,7 +61,7 @@
                       (format stream "...~%")))))
       (recurse root () 0))))
 
-(defun node (inputs outputs &key (stream T) label)
+(defun node (inputs outputs &key (stream NIL) label)
   (with-normalized-stream (stream stream)
     (let* ((height (max (length inputs) (length outputs)))
            (igap (truncate (- height (length inputs)) 2))
@@ -96,7 +96,7 @@
         (terpri stream))
       (format stream "~v{ ~} └~v{─~}┘ ~v{ ~}" ivlen 0 width 0 ovlen 0))))
 
-(defun progress (percentage &key (stream T) (width *print-right-margin*) (label T))
+(defun progress (percentage &key (stream NIL) (width *print-right-margin*) (label T))
   (with-normalized-stream (stream stream)
     (let* ((width (or width 80))
            (bar-width (max 0 (if label (- width 5) width)))
@@ -105,11 +105,14 @@
       (format stream "~v{█~}~v{░~}" full 0 empty 0)
       (when label (format stream " ~3d%" (floor percentage))))))
 
+(defun white-char-p (char)
+  #+sb-unicode (sb-unicode:whitespace-p char)
+  #-sb-unicode (member char '(#\Space #\Tab)))
+
 (defun wrap-char-p (char)
   (and (not (char= char #\Linefeed))
        (not (char= char #\Return))
-       #+sb-unicode (sb-unicode:whitespace-p char)
-       #-sb-unicode (member char '(#\Space #\Tab))))
+       (white-char-p char)))
 
 (defun wrap (line width)
   (let ((lines ())
@@ -146,7 +149,7 @@
           ((:right) (cons diff 0))
           ((:middle :center) (cons (truncate diff 2) (- diff (truncate diff 2))))))))
 
-(defun box (text &key (stream T) (width *print-right-margin*) (align :middle))
+(defun box (text &key (stream NIL) (width *print-right-margin*) (align :middle))
   (with-normalized-stream (stream stream)
     (let ((text (if (listp text) text (list text))))
       (when (or (eql T width) (null width))
@@ -159,7 +162,7 @@
           (format stream "│~v{ ~}~a~v{ ~}│~%" l 0 line r 0)))
       (format stream "└~v{─~}┘" (- width 2) 0))))
 
-(defun horizontal-line (width height &key (stream T) (bend :middle))
+(defun horizontal-line (width height &key (stream NIL) (bend :middle))
   (with-normalized-stream (stream stream)
     (when (< width 0) (setf width (- width) height (- height)))
     (let* ((l (ecase bend
@@ -180,7 +183,7 @@
             (T
              (format stream "~v{─~}" width 0))))))
 
-(defun vertical-line (width height &key (stream T) (bend :middle))
+(defun vertical-line (width height &key (stream NIL) (bend :middle))
   (with-normalized-stream (stream stream)
     (when (< height 0) (setf width (- width) height (- height)))
     (let* ((u (ecase bend
@@ -208,7 +211,7 @@
       (apply #'horizontal-line width height args)
       (apply #'vertical-line width height args)))
 
-(defun translate (string x y &key (stream T))
+(defun translate (string x y &key (stream NIL))
   (with-normalized-stream (stream stream)
     (let ((width (with-input-from-string (in string)
                    (loop for line = (read-line in NIL NIL)
@@ -221,3 +224,26 @@
               do (format stream "~v{ ~}~va~v{ ~}~%" x 0 width line (- x) 0)))
       (dotimes (i (- y))
         (format stream "~v{ ~}~%" (+ (abs x) width) 0)))))
+
+(defun composite (a b &key a-offset b-offset (stream NIL))
+  (let ((a (destructuring-bind (x . y) (or a-offset '(0 . 0))
+             (translate a x y :stream NIL)))
+        (b (destructuring-bind (x . y) (or b-offset '(0 . 0))
+             (translate b x y :stream NIL))))
+    (with-normalized-stream (stream stream)
+      (with-input-from-string (a a)
+        (with-input-from-string (b b)
+          (loop for al = (read-line a NIL)
+                for bl = (read-line b NIL)
+                do (cond ((and al bl)
+                          (loop for i from 0 below (min (length al) (length bl))
+                                for ac = (char al i) for bc = (char bl i)
+                                do (write-char (if (white-char-p bc) ac bc) stream))
+                          (loop for i from (min (length al) (length bl)) below (length al)
+                                do (write-char (char al i) stream))
+                          (loop for i from (min (length al) (length bl)) below (length bl)
+                                do (write-char (char bl i) stream))
+                          (terpri stream))
+                         (al (write-line al stream))
+                         (bl (write-line bl stream))
+                         (T (return)))))))))

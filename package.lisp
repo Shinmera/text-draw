@@ -12,4 +12,5 @@
    #:horizontal-line
    #:vertical-line
    #:line
-   #:translate))
+   #:translate
+   #:composite))
