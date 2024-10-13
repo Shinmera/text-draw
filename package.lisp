@@ -1,5 +1,6 @@
 (defpackage #:org.shirakumo.text-draw
   (:use #:cl)
+  (:shadow #:fill)
   ;; toolkit.lisp
   (:export
    #:wrap
@@ -11,6 +12,7 @@
    #:style)
   ;; draw.lisp
   (:export
+   #:fill
    #:table
    #:tree
    #:node

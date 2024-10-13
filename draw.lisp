@@ -1,5 +1,10 @@
 (in-package #:org.shirakumo.text-draw)
 
+(defun fill (width height &key stream (background :black))
+  (with-normalized-stream (stream stream)
+    (let ((bg (background background)))
+      (format stream "~v@{~v@{~a~:*~}~:*~%~}" height width bg))))
+
 (defun table (table &key stream (padding 1) (borders T))
   (with-normalized-stream (stream stream)
     (let* ((columns (length (first table)))
