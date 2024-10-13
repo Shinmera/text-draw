@@ -4,4 +4,11 @@
    #:table
    #:tree
    #:node
-   #:graph))
+   #:graph
+   #:progress
+   #:wrap
+   #:align
+   #:box
+   #:horizontal-line
+   #:vertical-line
+   #:line))
