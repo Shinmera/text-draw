@@ -20,6 +20,7 @@
    #:align
    #:rows
    #:progress
+   #:pad
    #:check
    #:radio
    #:horizontal-line

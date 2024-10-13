@@ -130,6 +130,17 @@
       (format stream "~v{█~}~v{░~}" full 0 empty 0)
       (when label (format stream " ~3d%" (floor percentage))))))
 
+(defun pad (text size &key stream (background :white))
+  (with-normalized-stream (stream stream)
+    (destructuring-bind (l &optional (u l) (r l) (b u)) (if (listp size) size (list size))
+      (let* ((bg (background background))
+             (lines (lines text))
+             (width (loop for line in lines maximize (length line))))
+        (format stream "~v@{~v@{~a~:*~}~:*~%~}" u (+ l width r) bg)
+        (dolist (line lines)
+          (format stream "~v@{~a~:*~}~*~a~v@{~a~:*~}~%" l bg line r bg))
+        (format stream "~v@{~v@{~a~:*~}~:*~%~}" b (+ l width r) bg)))))
+
 (defun check (filled &key stream label)
   (with-normalized-stream (stream stream)
     (format stream "~:[☐~;☑~]~@[ ~a~]" filled label)))
