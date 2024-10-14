@@ -1,0 +1,282 @@
+<!DOCTYPE html> <html lang="EN"> <head> <meta charset="utf-8"> <title>Text Draw</title> <style>html body{margin:0 auto 0 auto;padding:20px;max-width:1024px;font-family:sans-serif;font-size:14pt;overflow-y:scroll;}html body a{text-decoration:none;}html body a[href]{color:#0055AA;}html body a[href]:hover{color:#0088EE;}html body pre{background:#FAFAFA;border:1px solid #DDDDDD;padding:0.75em;overflow-x:auto;}html body pre >code a[href]{color:#223388;}article.project h1{font-size:1.7em;}article.project h1,article.project h2,article.project h3,article.project h4,article.project h5,article.project h6{margin:0.2em 0 0.1em 0;text-indent:1em;}article.project >header{text-align:center;}article.project >header img.logo{display:block;margin:auto;max-height:170px;}article.project >header h1{display:inline-block;text-indent:0;font-size:2.5em;}article.project >header .version{vertical-align:bottom;}article.project >header .languages{margin-top:-0.5em;text-transform:capitalize;}article.project >header .description{margin:0;}article.project >header .pages{margin-top:0.5em;font-size:1.2em;text-transform:capitalize;}article.project >header .pages a{display:inline-block;padding:0 0.2em;}article.project >section{margin:1em 0 1em 0;}article.project >section img{max-width:100%;}article.project #index >ul{list-style:none;margin:0;padding:0;}article.project .row label{display:inline-block;min-width:8em;}article.project #system .row{display:flex;}article.project #system #dependencies{display:inline;margin:0;padding:0;}article.project #system #dependencies li{display:inline;padding:0 0.2em;}article.project #system #author label{vertical-align:top;}article.project #system #author ul{display:inline-block;margin:0;padding:0;list-style:none;}article.definition{margin:1em 0 0 0;}article.definition >header h1,article.definition >header h2,article.definition >header h3,article.definition >header h4,article.definition >header h5,article.definition >header h6{text-indent:0;display:inline-block;}article.definition >header ul{display:inline-block;list-style:none;margin:0;padding:0;}article.definition >header ul li{display:inline-block;padding:0 0.2em 0 0;}article.definition >header .visibility{display:none;}article.definition >header .visibility,article.definition >header .type{text-transform:lowercase;}article.definition >header .source-link{visibility:hidden;float:right;}article.definition >header .source-link:after{visibility:visible;content:"[SRC]";}article.definition .docstring{margin:0 0 0 1em;}article.definition .docstring pre{font-size:0.8em;white-space:pre-wrap;}.definition.package >header ul.nicknames{display:inline-block;list-style:none;margin:0;padding:0 0 0 1em;}.definition.package >header ul.nicknames li{display:inline;}.definition.package >header ul.nicknames:before{content:"(";}.definition.package >header ul.nicknames:after{content:")";}.definition.package ul.definitions{margin:0;list-style:none;padding:0 0 0 0.5em;}.definition.callable >header .name:before,.definition.type >header .name:before{content:"(";font-weight:normal;}.definition.callable >header .arguments:after,.definition.type >header .arguments:after{content:")";}.definition.callable >header .arguments .arguments:before,.definition.type >header .arguments .arguments:before{content:"(";}.definition.callable >header .arguments .argument,.definition.type >header .arguments .argument{padding:0;}.definition.callable >header .arguments .argument.lambda-list-keyword,.definition.type >header .arguments .argument.lambda-list-keyword{color:#991155;}.definition li>mark{background:none;border-left:0.3em solid #0088EE;padding-left:0.3em;display:block;}</style> </head> <body> <article class="project"> <header>   <h1>text draw</h1>   <span class="version">1.0.0</span>    <p class="description">A utility library to draw nice presentations in pure text.</p>   </header> <section id="documentation"><article><h2 id="about text-drawing">About Text-Drawing</h2><p>This library implements some functions to draw graphics using pure Unicode text only. The intention is to allow you to create more meaningful debugging output in things like <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ADESCRIBE" class="xref">describe</a></code> or documentation.</p><h2 id="how to">How To</h2><p>You can print things with the <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ASTYLE" class="xref">style</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AFILL" class="xref">fill</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ATABLE" class="xref">table</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ATREE" class="xref">tree</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ANODE" class="xref">node</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABOX" class="xref">box</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AALIGN" class="xref">align</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3APROGRESS" class="xref">progress</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACHECK" class="xref">check</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ARADIO" class="xref">radio</a></code>, and <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ALINE" class="xref">line</a></code> functions. Once you have something drawn, you can transform that with <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3APAD" class="xref">pad</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ATRANSLATE" class="xref">translate</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACOMPOSITE" class="xref">composite</a></code>, <code><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AROWS" class="xref">rows</a></code>, and <code><a href="#MACRO-FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACOMPOSE" class="xref">compose</a></code>.</p><code style="display:block" class="code-block" data-language="common lisp"><pre><a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACOMPOSITE" class="xref">(</a><a href="#MACRO-FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACOMPOSE" class="xref">compose</a> T
+  (0 0 (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AFILL" class="xref">fill</a> 40 15 :background :gray))
+  (1 1 (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABOX" class="xref">box</a> (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AROWS" class="xref">rows</a> (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACHECK" class="xref">check</a> T :label &quot;Implement&quot;)
+                  (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACHECK" class="xref">check</a> T :label &quot;Document&quot;)
+                  (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACHECK" class="xref">check</a> NIL :label &quot;Publish&quot;))
+            :align :left))
+  (25 7 (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABOX" class="xref">box</a> &quot;New library!&quot;))
+  (14 4 (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ALINE" class="xref">line</a> 11 5 :start :circle :end T))
+  (2 11 (<a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABOX" class="xref">box</a> &quot;The Shinmera Process&quot; :width 36 :background :black)))
+
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒┌───────────┐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒│☑▒Implement│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒│☑▒Document │▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒│☐▒Publish  │○────╮▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒└───────────┘▒▒▒▒▒│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒│▒▒▒▒▒┌────────────┐▒
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒╰────⭢│New▒library!│▒
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒└────────────┘▒
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+▒▒▗▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▖▒▒
+▒▒▐███████The▒Shinmera▒Process███████▌▒▒
+▒▒▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘▒▒
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒</pre></code></article></section>   <section id="system"> <h2>System Information</h2>  <div class="row"> <label for="version">Version:</label> <a id="version">1.0.0</a> </div>   <div class="row"> <label for="dependencies">Dependencies:</label> <ul id="dependencies"><li><a class="external" href="https://Shinmera.github.io/documentation-utils/">documentation-utils</a></li></ul> </div>   <div class="row" id="author"> <label for="author">Author:</label> <a href="mailto:shinmera@tymoon.eu">Yukari Hafner</a> </div>   <div class="row"> <label for="license">License:</label> <a id="license" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/LICENSE">zlib</a> </div>   <div class="row"> <label for="homepage">Homepage:</label> <a id="homepage" href="https://shinmera.github.io/text-draw">https://shinmera.github.io/text-draw</a> </div>   <div class="row"> <label for="bug-tracker">Bug Tracker:</label> <a id="bug-tracker" href="https://github.com/Shinmera/text-draw/issues">https://github.com/Shinmera/text-draw/issues</a> </div>   <div class="row"> <label for="sources">Sources:</label> <a id="sources" href="https://github.com/Shinmera/text-draw.git">https://github.com/Shinmera/text-draw.git</a> </div>  </section>    <section id="index"> <h2>Definition Index</h2> <ul> <li> <article class="definition package" id="PACKAGE ORG.SHIRAKUMO.TEXT-DRAW"> <header> <h3> <a href="#PACKAGE%20ORG.SHIRAKUMO.TEXT-DRAW">ORG.SHIRAKUMO.TEXT-DRAW</a> </h3> <ul class="nicknames"></ul>  </header> <div class="docstring"><i>No documentation provided.</i></div> <ul class="definitions"> <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:ALIGN"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AALIGN">ALIGN</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TEXT</li>    <li class="argument">ALIGNMENT</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L97">Source</a>  </header> <div class="docstring"><pre>Aligns a text block to produce a fixed width block of lines.
+
+ALIGNMENT designates how the text block is aligned within the box.
+
+STREAM should be a format stream designator.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AALIGNMENT" class="xref">ALIGNMENT</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:ALIGNMENT"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AALIGNMENT">ALIGNMENT</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">ALIGNMENT</li>    <li class="argument">LINE</li>    <li class="argument">WIDTH</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/toolkit.lisp#L64">Source</a>  </header> <div class="docstring"><pre>Returns the number of characters to insert to achieve the desired alignment.
+
+Returns a cons with the characters on the left and right hand sides of
+the line to insert.
+
+ALIGNMENT can be one of :LEFT :RIGHT :MIDDLE :CENTER.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:ARROW"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AARROW">ARROW</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">DIR</li>    <li class="argument lambda-list-keyword">&amp;OPTIONAL</li>    <li class="argument">TYPE</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/styles.lisp#L39">Source</a>  </header> <div class="docstring"><pre>Return an arrow character.
+
+DIR can be one of 
+  :LEFT :WEST
+  :RIGHT :EAST
+  :UP :NORTH
+  :DOWN :SOUTH
+  :UP-DOWN :NORTH-SOUTH
+  :LEFT-RIGHT :EAST-WEST
+
+TYPE can be one of:
+  :HEAD
+  :LIGHT-HEAD
+  :EMPTY-HEAD
+  :TRIANGLE
+  :LIGHT
+  T :NORMAL
+  :HEAVY
+  :LARGE
+  :VERY-HEAVY
+  :DOUBLE
+  :CIRCLE
+  :FULL-CIRCLE
+  :DIAMOND
+  :FULL-DIAMOND</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:BACKGROUND"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABACKGROUND">BACKGROUND</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TYPE</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/styles.lisp#L30">Source</a>  </header> <div class="docstring"><pre>Return a background character.
+
+TYPE can be one of:
+  :TRANSPARENT
+  T :WHITE
+  :BLACK
+  :DARK-GRAY
+  :GRAY
+  :LIGHT-GRAY</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:BOX"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABOX">BOX</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TEXT</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">WIDTH</li>    <li class="argument">ALIGN</li>    <li class="argument">BACKGROUND</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L104">Source</a>  </header> <div class="docstring"><pre>Surrounds the TEXT with a box.
+
+WIDTH designates the width of the box. If NIL or T the box fits the
+given text block. If the text is made up of lines that exceed the
+width of the box, the text is wrapped automatically.
+
+ALIGN designates how the text block is aligned within the box.
+
+BACKGROUND designates the background of the box.
+
+STREAM should be a format stream designator.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AALIGNMENT" class="xref">ALIGNMENT</a>
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABACKGROUND" class="xref">BACKGROUND</a>
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AWRAP" class="xref">WRAP</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:CHECK"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACHECK">CHECK</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">FILLED</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">LABEL</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L147">Source</a>  </header> <div class="docstring"><pre>Generates a simple checkbox.
+
+If LABEL is given it is printed next to the checkbox.
+
+STREAM should be a format stream designator.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:COMPOSITE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACOMPOSITE">COMPOSITE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">A</li>    <li class="argument">B</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">A-OFFSET</li>    <li class="argument">B-OFFSET</li>    <li class="argument">STREAM</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L257">Source</a>  </header> <div class="docstring"><pre>Composites two text blocks together.
+
+A-OFFSET and B-OFFSET should be conses of X and Y offsets to apply to
+the respective blocks before compositing.
+
+When compositing, B is overlaid on top of A in such a way that any
+character in B takes precedence unless that character is a whitespace
+character that isn't a non-breaking space.
+
+Effectively this means that the non-breaking space is considered
+&quot;opaque&quot;, and all other white space is &quot;transparent.&quot;
+
+STREAM should be a format stream designator.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:FILL"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AFILL">FILL</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">WIDTH</li>    <li class="argument">HEIGHT</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">BACKGROUND</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L3">Source</a>  </header> <div class="docstring"><pre>Fill a block with a background pattern.
+
+STREAM should be a format stream designator.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABACKGROUND" class="xref">BACKGROUND</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:HORIZONTAL-LINE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AHORIZONTAL-LINE">HORIZONTAL-LINE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">WIDTH</li>    <li class="argument">HEIGHT</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">BEND</li>    <li class="argument">START</li>    <li class="argument">END</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L157">Source</a>  </header> <div class="docstring"><pre>Generates a horizontally oriented line.
+
+START and END if given designate the arrowheads to draw at either end
+of the line.
+
+BEND can be one of :LEFT :START :RIGHT :END :MIDDLE :CENTER and
+designates where in the line a bend should be generated when HEIGHT is
+greater than one.
+
+STREAM should be a format stream designator.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AARROW" class="xref">ARROW</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:LINE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ALINE">LINE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">WIDTH</li>    <li class="argument">HEIGHT</li>    <li class="argument lambda-list-keyword">&amp;REST</li>    <li class="argument">ARGS</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L240">Source</a>  </header> <div class="docstring"><pre>Generates a line.
+
+If the width is greater or equal to the height a horizontal line is
+generated, otherwise a vertical one.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AHORIZONTAL-LINE" class="xref">HORIZONTAL-LINE</a>
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AVERTICAL-LINE" class="xref">VERTICAL-LINE</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:LINES"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ALINES">LINES</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TEXT</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/toolkit.lisp#L73">Source</a>  </header> <div class="docstring"><pre>Returns a list of lines from the split text.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:NODE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ANODE">NODE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">INPUTS</li>    <li class="argument">OUTPUTS</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">LABEL</li>    <li class="argument">BACKGROUND</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L60">Source</a>  </header> <div class="docstring"><pre>Print a flow chart node with the given input and output ports.
+
+Both INPUTs and OUTPUTs should be lists of port entries. Each port
+entry should either be the name of the port or a cons consisting of
+the name and the value connected at that port.
+
+LABEL if given designates the label in the center of the node to
+print.
+
+BACKGROUND designates the background of the node box.
+
+STREAM should be a format stream designator.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABACKGROUND" class="xref">BACKGROUND</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:PAD"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3APAD">PAD</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TEXT</li>    <li class="argument">SIZE</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">BACKGROUND</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L136">Source</a>  </header> <div class="docstring"><pre>Pads the text block on all sides by SIZE.
+
+SIZE may either be an integer, or a list designating the padding to
+add on each side in order of LEFT TOP RIGHT BOTTOM.
+
+BACKGROUND designates the fill character of the padding.
+
+STREAM should be a format stream designator.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ABACKGROUND" class="xref">BACKGROUND</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:PROGRESS"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3APROGRESS">PROGRESS</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">PERCENTAGE</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">WIDTH</li>    <li class="argument">LABEL</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L126">Source</a>  </header> <div class="docstring"><pre>Prints a simple progress bar filled to PERCENTAGE.
+
+If the percentage is outside of [0,100] then the bar is either
+entirely empty or entirely full.
+
+When LABEL is T, some of WIDTH is taken up to print the percentage as
+a number label.
+
+STREAM should be a format stream designator.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:RADIO"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ARADIO">RADIO</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">FILLED</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">LABEL</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L151">Source</a>  </header> <div class="docstring"><pre>Generates a simple radio button
+
+If LABEL is given it is printed next to the radio button.
+
+STREAM should be a format stream designator.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:ROWS"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AROWS">ROWS</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument lambda-list-keyword">&amp;REST</li>    <li class="argument">PARTS</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L156">Source</a>  </header> <div class="docstring"><pre>Fuse a couple of parts together via new lines.
+
+Returns a new string with each PART on a line.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:STYLE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ASTYLE">STYLE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TEXT</li>    <li class="argument">STYLE</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/styles.lisp#L23">Source</a>  </header> <div class="docstring"><pre>Returns the text transformed into the given style.
+
+STYLE can be one of:
+
+ :sans
+ :bold
+ :italic
+ :bold-italic
+ :serif
+ :serif-bold
+ :serif-italic
+ :serif-bold-italic
+ :script
+ :script-bold
+ :fraktur
+ :fraktur-bold
+ :monospace
+ :doublestruck
+
+Note that by far not all characters support all of these styles. The
+text is transformed on a best-effort basis.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:TABLE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ATABLE">TABLE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TABLE</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">PADDING</li>    <li class="argument">BORDERS</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L8">Source</a>  </header> <div class="docstring"><pre>Format tabular data.
+
+The TABLE should be a list of lists, with each inner list being a row
+and each row having the same number of columns.
+
+BORDERS designates whether borders should be drawn around the cells or
+not.
+
+PADDING sets the number of spaces to surround each cell's contents by.
+
+STREAM should be a format stream designator.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:TRANSLATE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ATRANSLATE">TRANSLATE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">STRING</li>    <li class="argument">X</li>    <li class="argument">Y</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L243">Source</a>  </header> <div class="docstring"><pre>Translates the given string block by X and Y.
+
+This is the same as adding padding on the respective sides of the
+block.
+
+STREAM should be a format stream designator.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:TREE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ATREE">TREE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">ROOT</li>    <li class="argument">CHILDREN-FUN</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">MAX-DEPTH</li>    <li class="argument">KEY</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L41">Source</a>  </header> <div class="docstring"><pre>Format a tree structure.
+
+ROOT is the first element at the root. CHILDREN-FUN should be a
+function of one argument (a node in the tree) that returns a SEQUENCE
+of child nodes for that node.
+
+KEY should be a function that takes a node and whose return value is
+used to print the node's entry in the tree.
+
+MAX-DEPTH should be the maximum depth to which the tree is printed.
+Entries at a depth below that are abbreviated via three dots.
+
+STREAM should be a format stream designator.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:VERTICAL-LINE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AVERTICAL-LINE">VERTICAL-LINE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">WIDTH</li>    <li class="argument">HEIGHT</li>    <li class="argument lambda-list-keyword">&amp;KEY</li>    <li class="argument">STREAM</li>    <li class="argument">BEND</li>    <li class="argument">START</li>    <li class="argument">END</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L197">Source</a>  </header> <div class="docstring"><pre>Generates a vertically oriented line.
+
+START and END if given designate the arrowheads to draw at either end
+of the line.
+
+BEND can be one of :TOP :START :BOTTOM :END :MIDDLE :CENTER and
+designates where in the line a bend should be generated when WIDTH is
+greater than one.
+
+STREAM should be a format stream designator.
+
+See <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AARROW" class="xref">ARROW</a></pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:WIDTH"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AWIDTH">WIDTH</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">TEXT</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/toolkit.lisp#L78">Source</a>  </header> <div class="docstring"><pre>Returns the width of the text block respecting line feeds.</pre></div> </article> </li>  <li> <article class="definition function callable" id="FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:WRAP"> <header> <span class="visibility">EXTERNAL</span> <span class="type">FUNCTION</span> <h4 class="name"> <a href="#FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3AWRAP">WRAP</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">LINE</li>    <li class="argument lambda-list-keyword">&amp;OPTIONAL</li>    <li class="argument">WIDTH</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/toolkit.lisp#L37">Source</a>  </header> <div class="docstring"><pre>Perform line wrapping on a block of text.
+
+Returns a list of text lines.
+Wrapping is performed on every Linefeed and Return, and if the current
+line exceeds WIDTH number of characters. In the latter case, a line is
+wrapped at the last whitespace position if there is one within the
+current line, or at the width if there is not. Whitespace excluding
+the non-breaking space is trimmed from ends and starts of lines.</pre></div> </article> </li>  <li> <article class="definition macro callable" id="MACRO-FUNCTION ORG.SHIRAKUMO.TEXT-DRAW:COMPOSE"> <header> <span class="visibility">EXTERNAL</span> <span class="type">MACRO</span> <h4 class="name"> <a href="#MACRO-FUNCTION%20ORG.SHIRAKUMO.TEXT-DRAW%3ACOMPOSE">COMPOSE</a> </h4> <ul class="qualifiers"></ul> <ul class="arguments">  <li class="argument">STREAM</li>    <li class="argument lambda-list-keyword">&amp;BODY</li>    <li class="argument">PARTS</li>  </ul>  <a class="source-link" href="https://github.com/shinmera/text-draw/blob/46236db679be142fbdfc206107e92b7e38304bf5/draw.lisp#L281">Source</a>  </header> <div class="docstring"><pre>Convenience shorthand to composite shapes together.
+
+Each PART should be a list composed of the X and Y offset and the
+string of the block to compose. Eg:
+
+  (compose T
+    (0 0 (fill 20 11))
+    (6 4 (box &quot;Hello&quot;)))
+
+STREAM should be a format stream designator.</pre></div> </article> </li> </ul> </article> </li> </ul> </section>  </article> <script>window.addEventListener("DOMContentLoaded", function(){
+    var unmarkElement = function(el){
+        if(el.tagName === "mark" || el.tagName === "MARK"){
+            [].forEach.call(el.childNodes, function(child){
+                el.parentNode.insertBefore(child, el);
+            });
+            el.parentNode.removeChild(el);
+        }else if(el.parentNode.tagName === "mark"){
+            return unmarkElement(el.parentNode);
+        }
+        return null;
+    }
+
+    var unmarkAll = function(root){
+        root = root || document;
+        [].forEach.call(root.querySelectorAll("mark"), unmarkElement);
+    }
+    
+    var markElement = function(el){
+        if(el.parentNode.tagName === "mark" || el.parentNode.tagName === "MARK"){
+            return el.parentNode;
+        } else {
+            unmarkAll();
+            var marked = document.createElement("mark");
+            el.parentNode.insertBefore(marked, el);
+            marked.appendChild(el);
+            return marked;
+        }
+    }
+
+    var markFragmented = function(){
+        if(window.location.hash){
+            var el = document.getElementById(decodeURIComponent(window.location.hash.substr(1)));
+            if(el) markElement(el);
+        }
+    }
+
+    var registerXrefLink = function(link){
+        var el = document.getElementById(decodeURIComponent(link.getAttribute("href").substr(1)));
+        if(el){
+            link.addEventListener("click", function(){
+                markElement(el);
+            });
+        }
+    }
+
+    var registerXrefLinks = function(root){
+        root = root || document;
+        [].forEach.call(root.querySelectorAll("a.xref"), registerXrefLink);
+    }
+
+    markFragmented();
+    registerXrefLinks();
+}); </script> </body> </html> 
