@@ -6,6 +6,7 @@
       (format stream "~v@{~v@{~a~:*~}~:*~%~}" height width bg))))
 
 (defun table (table &key stream (padding 1) (borders T))
+  ;; TODO: background
   (with-normalized-stream (stream stream)
     (let* ((columns (length (first table)))
            (widths (append (loop for i from 0 below columns

@@ -9,7 +9,9 @@
    #:lines)
   ;; styles.lisp
   (:export
-   #:style)
+   #:style
+   #:background
+   #:arrow)
   ;; draw.lisp
   (:export
    #:fill

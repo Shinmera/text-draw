@@ -29,12 +29,12 @@
 
 (defun background (type)
   (ecase type
-    (:transparent " ")
-    (:white (string (code-char #x00A0)))
-    (:black "█")
-    (:dark-gray "░")
-    (:gray "▒")
-    (:light-gray "▓")))
+    (:transparent #\Space)
+    ((T :white)  (code-char #x00A0))
+    (:black      (char "█" 0))
+    (:dark-gray  (char "░" 0))
+    (:gray       (char "▒" 0))
+    (:light-gray (char "▓" 0))))
 
 (defun arrow (dir &optional (type :default))
   (char

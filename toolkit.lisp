@@ -34,7 +34,7 @@
        (not (char= char (code-char #x00A0)))
        (white-char-p char)))
 
-(defun wrap (line width)
+(defun wrap (line &optional (width most-positive-fixnum))
   (let ((lines ())
         (line-start 0)
         (last-candidate 0))
