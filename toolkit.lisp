@@ -79,21 +79,3 @@
   (with-input-from-string (text text)
     (loop for line = (read-line text NIL NIL)
           while line maximize (length line))))
-
-(defun background (type)
-  (ecase type
-    (:transparent " ")
-    (:white (string (code-char #x00A0)))
-    (:black "█")
-    (:dark-gray "░")
-    (:gray "▒")
-    (:light-gray "▓")))
-
-(defun arrow (dir)
-  (ecase dir
-    ((:left :west) "←")
-    ((:right :east) "→")
-    ((:up :north) "↑")
-    ((:down :south) "↓")
-    ((:up-down :north-south) "↕")
-    ((:left-right :east-west) "↔")))

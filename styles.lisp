@@ -26,3 +26,37 @@
                         style (loop for style being the hash-keys of *styles* collect style)))))
     (flet ((style (char) (gethash char tab char)))
       (map 'string #'style text))))
+
+(defun background (type)
+  (ecase type
+    (:transparent " ")
+    (:white (string (code-char #x00A0)))
+    (:black "█")
+    (:dark-gray "░")
+    (:gray "▒")
+    (:light-gray "▓")))
+
+(defun arrow (dir &optional (type :default))
+  (char
+   (ecase type
+     (:head         "⮜⮞⮝⮟↕↔")
+     (:light-head   "⮘⮚⮙⮛↕↔")
+     (:empty-head   "🢔🢖🢕🢗⬘⬖")
+     (:triangle     "⯇⯈⯅⯆⬘⬖")
+     (:light        "🠐🠒🠑🠓⭥⭤")
+     ((T :normal)   "⭠⭢⭡⭣⭥⭤")
+     (:heavy        "🠈🠊🠉🠋⭥⭤")
+     (:large        "🠜🠝🠞🠟⭥⭤")
+     (:very-heavy   "🠰🠲🠱🠳⭥⭤")
+     (:double       "⯬⯮⯭⯯⭥⭤")
+     (:circle       "○○○○○○")
+     (:full-circle  "●●●●●●")
+     (:diamond      "⬦⬦⬦⬦⬦⬦")
+     (:full-diamond "⬥⬥⬥⬥⬥⬥"))
+   (ecase dir
+     ((:left :west) 0)
+     ((:right :east) 1)
+     ((:up :north) 2)
+     ((:down :south) 3)
+     ((:up-down :north-south) 4)
+     ((:left-right :east-west) 5))))
