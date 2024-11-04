@@ -18,13 +18,6 @@
                                        for width in widths
                                        collect width collect value))))
       (if borders
-          (loop for row = (pop values)
-                do (loop for (width val) on row by #'cddr
-                         do (format stream "~v{ ~}" padding 0)
-                            (format stream "~va" (- width padding padding) val)
-                            (format stream "~v{ ~}" padding 0))
-                   (format stream "~%")
-                while values)
           (loop initially (format stream "┌~{~v{─~}~^┬~:*~}┐~%" widths)
                 for row = (pop values)
                 do (format stream "│")
@@ -36,7 +29,14 @@
                    (when values
                      (format stream "├~{~v{─~}~^┼~:*~}┤~%" widths))
                 while values
-                finally (format stream "└~{~v{─~}~^┴~:*~}┘" widths))))))
+                finally (format stream "└~{~v{─~}~^┴~:*~}┘" widths))
+          (loop for row = (pop values)
+                do (loop for (width val) on row by #'cddr
+                         do (format stream "~v{ ~}" padding 0)
+                            (format stream "~va" (- width padding padding) val)
+                            (format stream "~v{ ~}" padding 0))
+                   (format stream "~%")
+                while values)))))
 
 (defun tree (root children-fun &key stream (max-depth (or *print-level* 3)) (key #'identity))
   (with-normalized-stream (stream stream)
