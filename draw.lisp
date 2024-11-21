@@ -67,7 +67,7 @@
            (ovlen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (cdr port))) 0)))
            (oplen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (car port))) (length (princ-to-string port)))))
            (width (+ iplen oplen (if label (+ 1 (length (princ-to-string label))) 1)))
-           (bg (char (background background) 0)))
+           (bg (background background)))
       (format stream "~v{ ~} ┌~v{─~}┐ ~v{ ~}~%" ivlen 0 width 0 ovlen 0)
       (dotimes (i height)
         ;; Print the left hand port
