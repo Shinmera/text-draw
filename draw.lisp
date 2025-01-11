@@ -40,22 +40,25 @@
 
 (defun tree (root children-fun &key stream (max-depth (or *print-level* 3)) (key #'identity))
   (with-normalized-stream (stream stream)
-    (labels ((recurse (node last depth)
-               (when last
-                 (destructuring-bind (cur . rest) last
-                   (dolist (p (reverse rest))
-                     (format stream "~:[│  ~;   ~]" p))
-                   (format stream "~:[├~;└~]─" cur)))
-               (cond ((< depth max-depth)
-                      (format stream " ~a~%" (funcall key node))
-                      (let ((children (funcall children-fun node)))
-                        (when (typep children 'sequence)
-                          (loop with max = (1- (length children))
-                                for j from 0 to max
-                                do (recurse (elt children j) (list* (= max j) last) (1+ depth))))))
-                     (t
-                      (format stream "...~%")))))
-      (recurse root () 0))))
+    (let ((max-depth (etypecase max-depth
+                       (integer max-depth)
+                       ((member NIL T) most-positive-fixnum))))
+      (labels ((recurse (node last depth)
+                 (when last
+                   (destructuring-bind (cur . rest) last
+                     (dolist (p (reverse rest))
+                       (format stream "~:[│  ~;   ~]" p))
+                     (format stream "~:[├~;└~]─" cur)))
+                 (cond ((< depth max-depth)
+                        (format stream " ~a~%" (funcall key node))
+                        (let ((children (funcall children-fun node)))
+                          (when (typep children 'sequence)
+                            (loop with max = (1- (length children))
+                                  for j from 0 to max
+                                  do (recurse (elt children j) (list* (= max j) last) (1+ depth))))))
+                       (t
+                        (format stream "...~%")))))
+        (recurse root () 0)))))
 
 (defun node (inputs outputs &key stream label (background :white))
   (with-normalized-stream (stream stream)

@@ -122,7 +122,8 @@ KEY should be a function that takes a node and whose return value is
 used to print the node's entry in the tree.
 
 MAX-DEPTH should be the maximum depth to which the tree is printed.
-Entries at a depth below that are abbreviated via three dots.
+Entries at a depth below that are abbreviated via three dots. If NIL
+or T are passed, no max depth is applied.
 
 STREAM should be a format stream designator.")
   
