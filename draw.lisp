@@ -50,7 +50,7 @@
                        (format stream "~:[│  ~;   ~]" p))
                      (format stream "~:[├~;└~]─" cur)))
                  (cond ((< depth max-depth)
-                        (format stream " ~a~%" (funcall key node))
+                        (format stream "~@< ~@;~a~;~:>~%" (funcall key node))
                         (let ((children (funcall children-fun node)))
                           (when (typep children 'sequence)
                             (loop with max = (1- (length children))
