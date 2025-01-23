@@ -69,7 +69,8 @@
            (iplen (loop for port in inputs maximize (if (consp port) (length (princ-to-string (car port))) (length (princ-to-string port)))))
            (ovlen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (cdr port))) 0)))
            (oplen (loop for port in outputs maximize (if (consp port) (length (princ-to-string (car port))) (length (princ-to-string port)))))
-           (width (+ iplen oplen (if label (+ 1 (length (princ-to-string label))) 1)))
+           (label (when label (princ-to-string label)))
+           (width (+ iplen oplen (if label (+ 2 (length label)) 1)))
            (bg (background background)))
       (format stream "~v{ ~} ┌~v{─~}┐ ~v{ ~}~%" ivlen 0 width 0 ovlen 0)
       (dotimes (i height)
@@ -83,7 +84,9 @@
               (T
                (format stream "~v{ ~} ┤~v,,,va" ivlen 0 iplen bg (pop inputs))))
         ;; Print the label
-        (format stream "~v@{~a~:*~}" (- width iplen oplen) bg)
+        (if (and label (= i (floor height 2)))
+            (format stream "~a~a~a" bg label bg)
+            (format stream "~v@{~a~:*~}" (- width iplen oplen) bg))
         ;; Print the right hand port
         (cond ((or (< 0 ogap) (null outputs))
                (format stream "~v@{~a~:*~}~*│ ~v{ ~}" oplen bg ovlen 0)
