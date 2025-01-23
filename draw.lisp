@@ -81,7 +81,7 @@
                (destructuring-bind (port . value) (pop inputs)
                  (format stream "~v@a╶┤~v,,,va" ivlen value iplen bg port)))
               (T
-               (format stream "~v{ ~}~* ┤~v,,,va" ivlen 0 iplen bg (pop inputs))))
+               (format stream "~v{ ~} ┤~v,,,va" ivlen 0 iplen bg (pop inputs))))
         ;; Print the label
         (format stream "~v@{~a~:*~}" (- width iplen oplen) bg)
         ;; Print the right hand port
