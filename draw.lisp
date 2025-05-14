@@ -244,10 +244,11 @@
       (apply #'vertical-line width height args)))
 
 (defun plot (function &key (width (or *print-right-margin* 80)) (height 15)
-                           (left 0) (right 1) bottom top stream)
+                           (left 0) (right 1) bottom top stream (background :white))
   (with-normalized-stream (stream stream)
     (let* ((plot-width (- width 2))
            (plot-height (- height 2))
+           (background (background background))
            (samples (loop for x from 0 below plot-width
                           collect (funcall function (float (+ left (* (/ x (1- plot-width)) (- right left))) 0f0)))))
       (format stream "~&~5,2@f~v@{▁~} ~%" top (- plot-width 4) 0)
@@ -260,7 +261,7 @@
                      for normalized = (- (/ sample (- top bottom)) bottom)
                      for subcell = (* plot-height (- sample threshold))
                      for clamped = (min 1.0 (max 0.0 subcell))
-                     do (format stream "~[ ~;▁~;▂~;▃~;▄~;▅~;▆~;▇~;█~]" (round (* 8 clamped))))
+                     do (format stream "~[~a~;▁~;▂~;▃~;▄~;▅~;▆~;▇~;█~]" (round (* 8 clamped)) background))
                (format stream "▏~%"))
       (format stream "~5,2@f/~5,2@f~v@{▔~}~5,2@f" bottom left (- plot-width 14) right))))
 
