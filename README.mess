@@ -2,7 +2,7 @@
 This library implements some functions to draw graphics using pure Unicode text only. The intention is to allow you to create more meaningful debugging output in things like ``describe`` or documentation.
 
 ## How To
-You can print things with the ``style``, ``fill``, ``table``, ``tree``, ``node``, ``box``, ``align``, ``progress``, ``check``, ``radio``, and ``line`` functions. Once you have something drawn, you can transform that with ``pad``, ``translate``, ``composite``, ``rows``, and ``compose``.
+You can print things with the ``style``, ``fill``, ``table``, ``tree``, ``node``, ``box``, ``align``, ``progress``, ``check``, ``radio``, ``line``, and ``plot`` functions. Once you have something drawn, you can transform that with ``pad``, ``translate``, ``composite``, ``rows``, and ``compose``.
 
 :: common lisp
 (compose T

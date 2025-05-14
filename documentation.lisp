@@ -247,6 +247,20 @@ generated, otherwise a vertical one.
 
 See HORIZONTAL-LINE
 See VERTICAL-LINE")
+
+  (function plot
+    "Generates a plot.
+
+The plot is generated according to the output of FUNCTION for values
+within the region of [LEFT, RIGHT], and clamped into the range of
+[BOTTOM, TOP]. If either BOTTOM or TOP are not given, they are
+computed based on the values of FUNCTION.
+
+The output has an area as given by WIDTH and HEIGHT, which includes a
+border that denotes the axis values, meaning the actual plot has an
+area of WIDTH-2 x HEIGHT-2.
+
+STREAM should be a format stream designator.")
   
   (function translate
     "Translates the given string block by X and Y.

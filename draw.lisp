@@ -243,6 +243,27 @@
       (apply #'horizontal-line width height args)
       (apply #'vertical-line width height args)))
 
+(defun plot (function &key (width (or *print-right-margin* 80)) (height 15)
+                           (left 0) (right 1) bottom top stream)
+  (with-normalized-stream (stream stream)
+    (let* ((plot-width (- width 2))
+           (plot-height (- height 2))
+           (samples (loop for x from 0 below plot-width
+                          collect (funcall function (float (+ left (* (/ x (1- plot-width)) (- right left))) 0f0)))))
+      (format stream "~&~5,2@f~v@{▁~} ~%" top (- plot-width 4) 0)
+      (unless bottom (setf bottom (loop for sample in samples minimize sample)))
+      (unless top (setf top (loop for sample in samples maximize sample)))
+      (loop for i downfrom height to 0
+            for threshold = (/ i plot-height)
+            do (format stream "▕")
+               (loop for sample in samples
+                     for normalized = (- (/ sample (- top bottom)) bottom)
+                     for subcell = (* plot-height (- sample threshold))
+                     for clamped = (min 1.0 (max 0.0 subcell))
+                     do (format stream "~[ ~;▁~;▂~;▃~;▄~;▅~;▆~;▇~;█~]" (round (* 8 clamped))))
+               (format stream "▏~%"))
+      (format stream "~5,2@f/~5,2@f~v@{▔~}~5,2@f" bottom left (- plot-width 14) right))))
+
 (defun translate (string x y &key stream)
   (with-normalized-stream (stream stream)
     (let ((width (with-input-from-string (in string)

@@ -28,6 +28,7 @@
    #:horizontal-line
    #:vertical-line
    #:line
+   #:plot
    #:translate
    #:composite
    #:compose))
